@@ -1,0 +1,24 @@
+module.exports = {
+    name: 'deposito',
+    async execute(message, args, client) {
+        const userData = client.getUserData(message.author.id);
+        const amountArg = args[1];
+
+        if (!amountArg) return message.reply("⚠️ Specifica la quantità da depositare (es. `!deposito 200` o `!deposito all`).");
+
+        let amountToDeposit = amountArg.toLowerCase() === 'all' ? userData.wallet : parseInt(amountArg);
+
+        if (isNaN(amountToDeposit) || amountToDeposit <= 0) {
+            return message.reply("❌ Inserisci una cifra valida.");
+        }
+
+        if (userData.wallet < amountToDeposit) {
+            return message.reply("❌ Non hai abbastanza contanti!");
+        }
+
+        userData.wallet -= amountToDeposit;
+        userData.bank += amountToDeposit;
+
+        return message.reply(`✅ Hai depositato **${amountToDeposit}$** nel tuo conto bancario.`);
+    }
+};
