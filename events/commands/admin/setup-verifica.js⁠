@@ -1,0 +1,24 @@
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
+
+module.exports = {
+    name: 'setup-verifica',
+    async execute(message, args, client) {
+        if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
+            return message.reply("❌ Solo gli amministratori possono usare questo comando.");
+        }
+
+        const embed = new EmbedBuilder()
+            .setTitle("🎮 Verifica Account Roblox")
+            .setDescription("Clicca sul pulsante sottostante per verificare il tuo account Roblox e accedere al server.")
+            .setColor(0x2ECC71);
+
+        const button = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+                .setCustomId('btn_verify')
+                .setLabel('Verificati qui')
+                .setStyle(ButtonStyle.Success)
+        );
+
+        return message.channel.send({ embeds: [embed], components: [button] });
+    }
+};
