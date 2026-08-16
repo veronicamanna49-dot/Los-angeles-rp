@@ -1,7 +1,7 @@
 {
-  "name": "roblox-discord-bot",
+  "name": "bot-discord-modulare",
   "version": "1.0.0",
-  "description": "Bot Discord per verifica Roblox, ticket ed economia",
+  "description": "Bot Discord con struttura modulare",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
