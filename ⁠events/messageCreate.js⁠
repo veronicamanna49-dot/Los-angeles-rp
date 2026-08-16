@@ -1,0 +1,23 @@
+module.exports = {
+    name: 'messageCreate',
+    async execute(message, client) {
+        if (message.author.bot || !message.guild) return;
+
+        const args = message.content.split(' ');
+        const commandName = args[0].toLowerCase();
+
+        if (!commandName.startsWith('!')) return;
+
+        const cleanName = commandName.slice(1);
+        const command = client.commands.get(cleanName);
+
+        if (!command) return;
+
+        try {
+            await command.execute(message, args, client);
+        } catch (error) {
+            console.error(error);
+            message.reply('⚠️ Si è verificato un errore nell\'esecuzione del comando.');
+        }
+    }
+};
