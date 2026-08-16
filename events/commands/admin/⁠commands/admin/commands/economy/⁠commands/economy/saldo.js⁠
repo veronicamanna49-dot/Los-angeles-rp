@@ -1,0 +1,20 @@
+const { EmbedBuilder } = require('discord.js');
+
+module.exports = {
+    name: 'saldo',
+    async execute(message, args, client) {
+        const targetUser = message.mentions.users.first() || message.author;
+        const targetData = client.getUserData(targetUser.id);
+
+        const embed = new EmbedBuilder()
+            .setTitle(`🏦 Bilancio di ${targetUser.username}`)
+            .addFields(
+                { name: "💵 Contanti (Portafoglio)", value: `${targetData.wallet}$`, inline: true },
+                { name: "💳 Conto Bancario", value: `${targetData.bank}$`, inline: true },
+                { name: "💰 Totale", value: `${targetData.wallet + targetData.bank}$`, inline: false }
+            )
+            .setColor(0xF1C40F);
+
+        return message.reply({ embeds: [embed] });
+    }
+};
