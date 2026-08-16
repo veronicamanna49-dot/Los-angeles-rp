@@ -1,0 +1,28 @@
+const { EmbedBuilder } = require('discord.js');
+
+module.exports = {
+    name: 'work', // Usa !work o cambia in 'stipendio'
+    async execute(message, args, client) {
+        const userData = client.getUserData(message.author.id);
+        const cooldown = 43200000; // 12 ore
+        const now = Date.now();
+
+        if (now - userData.lastWork < cooldown) {
+            const timeLeft = cooldown - (now - userData.lastWork);
+            const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            return message.reply(`⏳ Hai già riscosso lo stipendio! Torna tra **${hoursLeft}h e ${minutesLeft}m**.`);
+        }
+
+        const salary = Math.floor(Math.random() * 500) + 500;
+        userData.wallet += salary;
+        userData.lastWork = now;
+
+        const embed = new EmbedBuilder()
+            .setTitle("💼 Stipendio Incassato")
+            .setDescription(`Hai lavorato duro e hai guadagnato **${salary}$**!\nIl denaro è stato aggiunto al tuo portafoglio.`)
+            .setColor(0x2ECC71);
+
+        return message.reply({ embeds: [embed] });
+    }
+};
