@@ -1,0 +1,24 @@
+module.exports = {
+    name: 'prelievo',
+    async execute(message, args, client) {
+        const userData = client.getUserData(message.author.id);
+        const amountArg = args[1];
+
+        if (!amountArg) return message.reply("⚠️ Specifica la quantità da prelevare (es. `!prelievo 200` o `!prelievo all`).");
+
+        let amountToWithdraw = amountArg.toLowerCase() === 'all' ? userData.bank : parseInt(amountArg);
+
+        if (isNaN(amountToWithdraw) || amountToWithdraw <= 0) {
+            return message.reply("❌ Inserisci una cifra valida.");
+        }
+
+        if (userData.bank < amountToWithdraw) {
+            return message.reply("❌ Non hai abbastanza denaro in banca!");
+        }
+
+        userData.bank -= amountToWithdraw;
+        userData.wallet += amountToWithdraw;
+
+        return message.reply(`✅ Hai prelevato **${amountToWithdraw}$** dalla banca.`);
+    }
+};
