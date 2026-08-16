@@ -1,0 +1,25 @@
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
+
+module.exports = {
+    name: 'setup-ticket',
+    async execute(message, args, client) {
+        if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
+            return message.reply("❌ Solo gli amministratori possono configurare il pannello ticket.");
+        }
+
+        const embed = new EmbedBuilder()
+            .setTitle("🎫 Assistenza & Ticket")
+            .setDescription("Hai bisogno di aiuto? Clicca sul pulsante qui sotto per aprire un ticket privato con lo Staff.")
+            .setColor(0x3498DB);
+
+        const button = new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+                .setCustomId('btn_open_ticket')
+                .setLabel('Apri Ticket')
+                .setEmoji('📩')
+                .setStyle(ButtonStyle.Primary)
+        );
+
+        return message.channel.send({ embeds: [embed], components: [button] });
+    }
+};
